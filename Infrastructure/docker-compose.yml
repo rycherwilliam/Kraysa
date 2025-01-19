@@ -7,9 +7,19 @@ services:
       - "8080:8080"
     depends_on:
       - mongodb
+    networks:
+      - kraysa-network
+
   mongodb:
     image: mongo:6.0
+    container_name: kraysa_mongo
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: KraysaFinance
+    networks:
+      - kraysa-network
+
+networks:
+  kraysa-network:
+    driver: bridge
