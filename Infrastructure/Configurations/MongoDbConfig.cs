@@ -18,6 +18,10 @@ namespace Infrastructure.Configurations
 
         public IMongoCollection<T> GetCollection<T>(string collectionName)
         {
+            if (string.IsNullOrEmpty(DatabaseName))
+            {
+                throw new ArgumentNullException(nameof(DatabaseName));
+            }
             return Client.GetDatabase(DatabaseName).GetCollection<T>(collectionName);
         }
     }
