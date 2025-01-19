@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-
 
 namespace Infrastructure.Configurations
 {
     public class MongoDbConfig
     {
-        private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
+        public string ConnectionString { get; set; }
+        public string DatabaseName { get; set; }
+        public IMongoClient Client { get; private set; }
 
-        public MongoDbConfig(string connectionString, string databaseName)
+        public MongoDbConfig(IConfiguration configuration)
         {
-            _client = new MongoClient(connectionString);
-            _database = _client.GetDatabase(databaseName);
+            ConnectionString = configuration["MongoDbSettings:ConnectionString"];
+            DatabaseName = configuration["MongoDbSettings:DatabaseName"];
+            Client = new MongoClient(ConnectionString);
         }
 
         public IMongoCollection<T> GetCollection<T>(string collectionName)
         {
-            return _database.GetCollection<T>(collectionName);
+            return Client.GetDatabase(DatabaseName).GetCollection<T>(collectionName);
         }
     }
 }
