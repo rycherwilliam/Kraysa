@@ -1,11 +1,12 @@
 ﻿using Application.Adapters;
-using Application.Interfaces;
 using Application.Models;
+using Application.Repositories.Interfaces;
+using Application.UseCases.Interfaces;
 using Domain.Entities;
 
 namespace Application.UseCases
 {
-    public class AddTransactionUseCase
+    public class AddTransactionUseCase : IAddTransactionUseCase
     {
         private readonly ITransactionRepository _transactionRepository;
         private readonly IAccountRepository _accountRepository;
@@ -16,7 +17,7 @@ namespace Application.UseCases
             _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
-        public async Task Execute(TransactionDto transactionDto)
+        public async Task ExecuteAsync(TransactionDto transactionDto)
         {
             var transaction = TransactionAdapter.ToDomain(transactionDto);
 

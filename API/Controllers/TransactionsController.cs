@@ -21,7 +21,7 @@ namespace API.Controllers
             if (transactionDto == null)
                 return BadRequest("Transaction cannot be null.");
 
-            await _addTransactionUseCase.Execute(transactionDto);
+            await _addTransactionUseCase.ExecuteAsync(transactionDto);
             return Ok("Transaction added successfully.");
         }
     }

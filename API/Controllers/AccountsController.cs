@@ -1,7 +1,7 @@
-﻿using Application.Adapters;
-using Application.Interfaces;
+﻿using Application.UseCases;
 using Application.Models;
 using Microsoft.AspNetCore.Mvc;
+using Application.UseCases.Interfaces;
 
 namespace API.Controllers
 {
@@ -9,11 +9,15 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly ICreateAccountUseCase _createAccountUseCase;
+        private readonly IGetAccountUseCase _getAccountUseCase;
 
-        public AccountsController(IAccountRepository accountRepository)
+        public AccountsController(
+            ICreateAccountUseCase createAccountUseCase,
+            IGetAccountUseCase getAccountUseCase)
         {
-            _accountRepository = accountRepository;
+            _createAccountUseCase = createAccountUseCase;
+            _getAccountUseCase = getAccountUseCase;
         }
 
         [HttpPost]
@@ -22,8 +26,7 @@ namespace API.Controllers
             if (accountDto == null)
                 return BadRequest("Account cannot be null.");
 
-            var account = AccountAdapter.ToDomain(accountDto);
-            await _accountRepository.AddAsync(account);
+            await _createAccountUseCase.ExecuteAsync(accountDto);
 
             return Ok("Account created successfully.");
         }
@@ -34,7 +37,7 @@ namespace API.Controllers
             if (accountId == Guid.Empty)
                 return BadRequest("AccountId cannot be empty.");
 
-            var account = await _accountRepository.GetByIdAsync(accountId);
+            var account = await _getAccountUseCase.GetByIdAsync(accountId);
             if (account == null)
                 return NotFound("Account not found.");
 
@@ -44,7 +47,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAccounts()
         {
-            var accounts = await _accountRepository.GetAllAsync();
+            var accounts = await _getAccountUseCase.GetAllAsync();
             return Ok(accounts);
         }
     }

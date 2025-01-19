@@ -1,8 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Application.Repositories.Interfaces;
+using Application.UseCases.Interfaces;
 
 namespace Application.UseCases
 {
-    public class UpdateAccountBalanceUseCase
+    public class UpdateAccountBalanceUseCase: IUpdateAccountBalanceUseCase
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -11,7 +12,7 @@ namespace Application.UseCases
             _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
-        public async Task Execute(Guid accountId, decimal amount)
+        public async Task ExecuteAsync(Guid accountId, decimal amount)
         {
             if (accountId == Guid.Empty)
                 throw new ArgumentException("AccountId cannot be empty.");

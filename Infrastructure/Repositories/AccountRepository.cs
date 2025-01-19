@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Infrastructure.Configurations;
-using Application.Interfaces;
 using MongoDB.Driver;
+using Application.Repositories.Interfaces;
 
 namespace Infrastructure.Repositories
 {
