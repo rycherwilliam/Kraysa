@@ -1,5 +1,4 @@
-﻿using Application.UseCases;
-using Application.Models;
+﻿using Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.UseCases.Interfaces;
 

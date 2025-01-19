@@ -1,5 +1,4 @@
-using Application.UseCases;
-using Application.UseCases.Interfaces;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +9,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register Use Cases
-builder.Services.AddScoped<ICreateAccountUseCase, CreateAccountUseCase>();
-builder.Services.AddScoped<IGetAccountUseCase, GetAccountUseCase>();
+// Register services via Application
+builder.Services.AddApplicationUseCases();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -24,9 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
